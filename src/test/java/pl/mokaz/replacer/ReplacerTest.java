@@ -10,7 +10,7 @@ import static org.assertj.core.api.Assertions.*;
 
 public class ReplacerTest {
 	
-	private CharacterReplacer replacer;
+	private Replacer replacer;
 	
 	@Before
 	public void setUp() {
@@ -20,7 +20,7 @@ public class ReplacerTest {
 	@Test
 	public void shouldReturnOneElementWhenQuestionMarkNotExist() {
 		
-		List<String> result = replacer.change("ab");
+		List<String> result = replacer.createAndReplace("ab");
 		
 		assertThat(result).hasSize(1);
 		assertThat(result).contains("ab");
@@ -29,7 +29,7 @@ public class ReplacerTest {
 	@Test
 	public void shouldReturn2ElementsFromOneQuestionMark() {
 		
-		List<String> result = replacer.change("ab?");
+		List<String> result = replacer.createAndReplace("ab?");
 		
 		assertThat(result).hasSize(2);
 		assertThat(result).contains("ab0","ab1");
@@ -38,7 +38,7 @@ public class ReplacerTest {
 	@Test
 	public void shouldReturn4ElementsFrom2QuestionMark() {
 		
-		List<String> result = replacer.change("a?b?");
+		List<String> result = replacer.createAndReplace("a?b?");
 		
 		assertThat(result).hasSize(4);
 		assertThat(result).contains("a0b1", "a1b0", "a1b1", "a0b0");
@@ -47,7 +47,7 @@ public class ReplacerTest {
 	@Test
 	public void shouldReturn8ElementsFrom3QuestionMark() {
 	
-		List<String> result = replacer.change("a???");
+		List<String> result = replacer.createAndReplace("a???");
 		
 		assertThat(result).hasSize(8);
 		assertThat(result).contains("a000", "a001", "a010", "a011",
@@ -57,7 +57,15 @@ public class ReplacerTest {
 	@Test
 	public void shouldReturnEmptyListWhenInputIsNull() {
 		
-		List<String> result = replacer.change(null);
+		List<String> result = replacer.createAndReplace(null);
+		
+		assertThat(result).isEmpty();
+	}
+	
+	@Test
+	public void shouldReturnEmptyListWhenInputIsEmpty() {
+		
+		List<String> result = replacer.createAndReplace("");
 		
 		assertThat(result).isEmpty();
 	}
